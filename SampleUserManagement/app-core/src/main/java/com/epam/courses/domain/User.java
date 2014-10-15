@@ -1,7 +1,8 @@
 package com.epam.courses.domain;
 
 /**
- * Created by xalf on 10/15/14.
+ *
+ * @author afedasiuk on 10/15/14.
  */
 public class User {
 
