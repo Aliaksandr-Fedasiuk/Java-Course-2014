@@ -1,12 +1,17 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,8 @@ import static org.junit.Assert.assertNotNull;
 @ContextConfiguration(locations = {"classpath:/testApplicationContextSpring.xml"})
 public class UserDaoImplTest {
 
+  private static final Logger LOGGER = Logger.getLogger(UserDaoImplTest.class);
+
   @Autowired
   private DataSource dataSource;
 
@@ -35,9 +42,18 @@ public class UserDaoImplTest {
 
   private User user;
 
+  static {
+    PropertyConfigurator.configure("src/test/resources/log4j.properties");
+  }
+
+  @BeforeClass
+  public static void setup() throws Exception {
+    BasicConfigurator.configure();
+    Logger.getRootLogger().setLevel(Level.DEBUG);
+  }
+
   @Before
   public void setUp() throws Exception {
-
     IDataSet dataSet = new FlatXmlDataSetBuilder().build(datasetResource.getInputStream());
     IDatabaseConnection dbConn = new DatabaseDataSourceConnection(dataSource);
     dbConn.getConnection().createStatement().executeUpdate(
@@ -66,4 +82,5 @@ public class UserDaoImplTest {
     users = userDao.getUsers();
     assertEquals(sizeBefore, users.size() - 1);
   }
+
 }
