@@ -1,14 +1,12 @@
 package com.epam.courses.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserTest extends Assert {
 
@@ -44,7 +42,6 @@ public class UserTest extends Assert {
     public void testForNPEAnnotation() {
         throw new NullPointerException();
     }
-
 
     @After
     public void cleanUpTestData() {

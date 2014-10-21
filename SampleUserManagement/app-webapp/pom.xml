@@ -4,7 +4,7 @@
 
     <artifactId>app-webapp</artifactId>
     <packaging>war</packaging>
-    <name>300 Sample User Management Webapp</name>
+    <name>400 Sample User Management Webapp</name>
     <parent>
         <groupId>com.epam.brest.courses</groupId>
         <artifactId>sampleusermanagement</artifactId>
