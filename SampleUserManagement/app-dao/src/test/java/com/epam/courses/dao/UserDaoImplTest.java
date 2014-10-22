@@ -1,8 +1,6 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.dbunit.database.DatabaseDataSourceConnection;
@@ -11,7 +9,6 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +41,6 @@ public class UserDaoImplTest {
 
   static {
     PropertyConfigurator.configure("src/test/resources/log4j.properties");
-  }
-
-  @BeforeClass
-  public static void setup() throws Exception {
-    BasicConfigurator.configure();
-    Logger.getRootLogger().setLevel(Level.DEBUG);
   }
 
   @Before
