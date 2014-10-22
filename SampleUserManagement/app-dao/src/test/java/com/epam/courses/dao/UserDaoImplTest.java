@@ -1,25 +1,38 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/testApplicationContextSpring.xml"})
 public class UserDaoImplTest {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDaoImplTest.class);
+  private static final Logger LOGGER = Logger.getLogger(UserDaoImplTest.class);
 
-    @Autowired
-    private UserDao userDao;
+  @Autowired
+  private DataSource dataSource;
 
     @Test
     public void getUsers() throws Exception {
