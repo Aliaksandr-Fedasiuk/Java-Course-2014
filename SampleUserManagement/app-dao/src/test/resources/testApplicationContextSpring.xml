@@ -19,7 +19,7 @@
         <property name="password" value="" />
     </bean>
 
-    <jdbc:initialize-database data-source="dataSource" enabled="true" ignore-failures="DROPS">
+    <jdbc:initialize-database data-source="dataSource">
         <jdbc:script location="create-tables-test.sql"/>
         <jdbc:script location="data-script.sql"/>
     </jdbc:initialize-database>
