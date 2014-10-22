@@ -1,6 +1,8 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.dbunit.database.DatabaseDataSourceConnection;
@@ -9,6 +11,7 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,47 +34,29 @@ public class UserDaoImplTest {
   @Autowired
   private DataSource dataSource;
 
-  @Autowired
-  private ClassPathResource datasetResource;
+    @Test
+    public void getUsers() throws Exception {
+        List<User> users = userDao.getUsers();
+        assertNotNull(users);
+        assertFalse(users.isEmpty());
+    }
 
-  @Autowired
-  private UserDao userDao;
+    @Test
+    public void addUser() throws Exception {
+        List<User> users = userDao.getUsers();
+        int sizeBefore = users.size();
+        User user = new User(3L, "userLogin3", "userName3");
+        userDao.addUser(user);
+        users = userDao.getUsers();
+        assertEquals(sizeBefore, users.size() - 1);
+    }
 
-  private User user;
-
-  static {
-    PropertyConfigurator.configure("src/test/resources/log4j.properties");
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    IDataSet dataSet = new FlatXmlDataSetBuilder().build(datasetResource.getInputStream());
-    IDatabaseConnection dbConn = new DatabaseDataSourceConnection(dataSource);
-    dbConn.getConnection().createStatement().executeUpdate(
-        " create schema dbunit AUTHORIZATION dba; " +
-        " commit; " +
-        " drop table USER if exists; " +
-        " create table USER (" +
-        "   userid BIGINT IDENTITY, " +
-        "   login VARCHAR(255) NOT NULL, " +
-        "   name VARCHAR(255) NOT NULL); "
-    );
-    dbConn.getConnection().commit();
-    DatabaseOperation.CLEAN_INSERT.execute(dbConn, dataSet);
-
-    user = new User(1L, "userLogin", "userName");
-  }
-
-  @Test
-  public void testGetUsers() throws Exception {
-    List<User> users = userDao.getUsers();
-    assertNotNull(users);
-
-    int sizeBefore = users.size();
-    userDao.addUser(user);
-
-    users = userDao.getUsers();
-    assertEquals(sizeBefore, users.size() - 1);
-  }
-
+    @Test
+    public void removeUser() throws Exception {
+        List<User> users = userDao.getUsers();
+        int sizeBefore = users.size();
+        userDao.removeUser(2L);
+        users = userDao.getUsers();
+        assertEquals(sizeBefore, users.size() + 1);
+    }
 }

@@ -17,42 +17,40 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-  private final static Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
+    private final static Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-  private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-  public void setDataSource(DataSource dataSource) {
-    this.jdbcTemplate = new JdbcTemplate(dataSource);
-  }
-
-  @Override
-  public void addUser(User user) {
-    LOGGER.debug("add: " + user);
-    jdbcTemplate.update("insert into USER(userid, login, name) values(?, ?, ?)",
-        new Object[] {user.getUserId(), user.getLogin(), user.getName()});
-  }
-
-  @Override
-  public List<User> getUsers() {
-    LOGGER.debug("get users()");
-    return jdbcTemplate.query( "select userId, login, name from USER", new UserMapper());
-  }
-
-  @Override
-  public void removeUser(Long userId) {
-    LOGGER.debug("removeUser: userId = " + userId);
-    jdbcTemplate.update("delete from USER where userId = ?", Long.valueOf(userId));
-  }
-
-  public class UserMapper implements RowMapper<User> {
-
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-      User user = new User();
-      user.setUserId(rs.getLong("userId"));
-      user.setLogin(rs.getString("login"));
-      user.setName(rs.getString("name"));
-      return user;
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-  }
 
+    @Override
+    public void addUser(User user) {
+        LOGGER.debug("add: " + user);
+        jdbcTemplate.update("insert into USER(userid, login, name) values(?, ?, ?)",
+                user.getUserId(), user.getLogin(), user.getName());
+    }
+
+    @Override
+    public List<User> getUsers() {
+        LOGGER.debug("get users()");
+        return jdbcTemplate.query("select userId, login, name from USER", new UserMapper());
+    }
+
+    @Override
+    public void removeUser(Long userId) {
+        LOGGER.debug("removeUser: userId = " + userId);
+        jdbcTemplate.update("delete from USER where userId = ?", userId);
+    }
+
+    public class UserMapper implements RowMapper<User> {
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user = new User();
+            user.setUserId(rs.getLong("userId"));
+            user.setLogin(rs.getString("login"));
+            user.setName(rs.getString("name"));
+            return user;
+        }
+    }
 }
