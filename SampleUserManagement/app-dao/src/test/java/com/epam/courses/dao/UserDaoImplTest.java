@@ -14,9 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/testApplicationContextSpring.xml" })
+@ContextConfiguration(locations = { "classpath:/testDaoApplicationContextSpring.xml" })
 public class UserDaoImplTest {
 
   @Autowired
@@ -44,6 +45,24 @@ public class UserDaoImplTest {
 
     users = userDao.getUsers();
     assertEquals(sizeBefore, users.size() - 1);
+  }
+
+  @Test
+  public void testGetUserByLogin() throws Exception {
+    User user = new User(4L, "userLogin4", "userName4");
+    userDao.addUser(user);
+
+    User newUser = userDao.getUserByLogin("userLogin4");
+    assertEquals(user, newUser);
+  }
+
+  @Test
+  public void testGetUserById() throws Exception {
+    User user = new User(5L, "userLogin5", "userName5");
+    userDao.addUser(user);
+
+    User newUser = userDao.getUserById(5L);
+    assertEquals(user, newUser);
   }
 
   @Test

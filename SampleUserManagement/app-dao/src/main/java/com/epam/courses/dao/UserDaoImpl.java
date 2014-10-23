@@ -27,18 +27,31 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
-        LOGGER.debug("add: " + user);
+        LOGGER.debug("addUser: " + user);
         jdbcTemplate.update("insert into USER(userid, login, name) values(?, ?, ?)",
                 user.getUserId(), user.getLogin(), user.getName());
     }
 
     @Override
     public List<User> getUsers() {
-        LOGGER.debug("get users()");
+        LOGGER.debug("getUsers()");
         return jdbcTemplate.query("select userId, login, name from USER", new UserMapper());
     }
 
-    @Override
+  @Override
+  public User getUserById(Long userId) {
+    LOGGER.debug("getUserById :: userId = " + userId);
+    return jdbcTemplate.queryForObject("select userId, login, name from USER where userid = ?",
+        new UserMapper(), userId);
+  }
+
+  @Override
+  public User getUserByLogin(String login) {
+    return jdbcTemplate.queryForObject("select userId, login, name from USER where LCASE(login) = ?",
+        new String[]{login.toLowerCase()}, new UserMapper());
+  }
+
+  @Override
     public void removeUser(Long userId) {
         LOGGER.debug("removeUser: userId = " + userId);
         jdbcTemplate.update("delete from USER where userId = ?", userId);
