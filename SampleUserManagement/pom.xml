@@ -14,13 +14,13 @@
     <modules>
         <module>app-core</module>
         <module>app-dao</module>
+        <module>app-service</module>
         <module>app-webapp</module>
         <module>utils</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project-root>${projects-root}/trunk</project-root>
         <org.springframework.version>4.1.1.RELEASE</org.springframework.version>
     </properties>
 
@@ -44,6 +44,12 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>app-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>app-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -1,19 +1,17 @@
-package com.epam.courses.dao;
+package com.epam.courses.services;
 
 import com.epam.courses.domain.User;
 
 import java.util.List;
 
 /**
- * Created by xalf on 10/17/14.
+ * Created by xalf on 10/23/14.
  */
-public interface UserDao {
+public interface UserService {
 
   public void addUser(User user);
 
-  public List<User> getUsers();
-
-  public User getUserById(Long userId);
+  public List<User> getAllUsers();
 
   public User getUserByLogin(String login);
 
