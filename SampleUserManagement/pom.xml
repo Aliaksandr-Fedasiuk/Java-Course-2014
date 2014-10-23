@@ -21,7 +21,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project-root>${project-root}/trunk</project-root>
         <org.springframework.version>4.1.1.RELEASE</org.springframework.version>
     </properties>
 
