@@ -4,20 +4,26 @@ import com.epam.courses.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:/testServiceApplicationContextSpring.xml" })
+@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
+@Transactional
 public class UserServiceImplTest {
 
   public static final String USER_NAME = "userName";
@@ -55,7 +61,21 @@ public class UserServiceImplTest {
   }
 
   @Test
+  @Rollback(true)
   public void testAddUser() throws Exception {
+    List<User> users = userService.getAllUsers();
+    User newUser = new User(null, USER_LOGIN_TEST, "userNameTest");
+    userService.addUser(newUser);
+    assertEquals(users.size(), userService.getAllUsers().size() - 1);
+    assertEquals(userService.getUserByLogin(USER_LOGIN_TEST).getLogin(), USER_LOGIN_TEST);
+  }
+
+  @Test
+  @SqlGroup({
+      @Sql(scripts = "/create-tables-test.sql", config = @SqlConfig(commentPrefix = "`")),
+      @Sql("/data-script.sql")})
+  @Rollback(true)
+  public void testAddUserAnnotation() throws Exception {
     List<User> users = userService.getAllUsers();
     User newUser = new User(null, USER_LOGIN_TEST, "userNameTest");
     userService.addUser(newUser);
