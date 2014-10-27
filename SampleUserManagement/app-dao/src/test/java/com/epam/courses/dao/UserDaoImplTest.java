@@ -1,10 +1,6 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +18,6 @@ public class UserDaoImplTest {
 
   @Autowired
   private UserDao userDao;
-
-  @BeforeClass
-  public static void setup() throws Exception {
-    BasicConfigurator.configure();
-    Logger.getRootLogger().setLevel(Level.DEBUG);
-  }
 
   @Test
   public void getUsers() throws Exception {

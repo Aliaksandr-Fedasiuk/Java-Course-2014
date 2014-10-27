@@ -1,10 +1,6 @@
 package com.epam.courses.services;
 
 import com.epam.courses.domain.User;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +33,6 @@ public class UserServiceImplTest {
   public static final String USER_NAME_TEST = "userNameTest";
 
   public static final String USER_LOGIN_TEST = "userLoginTest";
-
-  @BeforeClass
-  public static void setup() throws Exception {
-    BasicConfigurator.configure();
-    Logger.getRootLogger().setLevel(Level.DEBUG);
-  }
 
   @Autowired
   private UserService userService;
