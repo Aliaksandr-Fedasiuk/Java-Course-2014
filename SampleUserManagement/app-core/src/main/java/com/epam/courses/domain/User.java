@@ -56,13 +56,13 @@ public class User {
 
     User user = (User) o;
 
-    if (!login.equals(user.login)) {
+    if (login != null ? !login.equals(user.login) : user.login != null) {
       return false;
     }
-    if (!name.equals(user.name)) {
+    if (name != null ? !name.equals(user.name) : user.name != null) {
       return false;
     }
-    if (!userId.equals(user.userId)) {
+    if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
       return false;
     }
 
@@ -71,9 +71,9 @@ public class User {
 
   @Override
   public int hashCode() {
-    int result = userId.hashCode();
-    result = 31 * result + login.hashCode();
-    result = 31 * result + name.hashCode();
+    int result = userId != null ? userId.hashCode() : 0;
+    result = 31 * result + (login != null ? login.hashCode() : 0);
+    result = 31 * result + (name != null ? name.hashCode() : 0);
     return result;
   }
 

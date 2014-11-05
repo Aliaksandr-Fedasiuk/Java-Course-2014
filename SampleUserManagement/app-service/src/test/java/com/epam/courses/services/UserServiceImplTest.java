@@ -1,10 +1,6 @@
 package com.epam.courses.services;
 
 import com.epam.courses.domain.User;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +34,6 @@ public class UserServiceImplTest {
 
   public static final String USER_LOGIN_TEST = "userLoginTest";
 
-  @BeforeClass
-  public static void setup() throws Exception {
-    BasicConfigurator.configure();
-    Logger.getRootLogger().setLevel(Level.DEBUG);
-  }
-
   @Autowired
   private UserService userService;
 
@@ -73,10 +63,10 @@ public class UserServiceImplTest {
   @Test
   @Rollback(true)
   public void testAddUser() throws Exception {
-    List<User> users = userService.getAllUsers();
+    List<User> users = userService.getUsers();
     User newUser = new User(null, USER_LOGIN_TEST, "userNameTest");
     userService.addUser(newUser);
-    assertEquals(users.size(), userService.getAllUsers().size() - 1);
+    assertEquals(users.size(), userService.getUsers().size() - 1);
     assertEquals(userService.getUserByLogin(USER_LOGIN_TEST).getLogin(), USER_LOGIN_TEST);
   }
 
@@ -86,25 +76,29 @@ public class UserServiceImplTest {
       @Sql("/data-script.sql")})
   @Rollback(true)
   public void testAddUserAnnotation() throws Exception {
-    List<User> users = userService.getAllUsers();
+    List<User> users = userService.getUsers();
     User newUser = new User(null, USER_LOGIN_TEST, "userNameTest");
     userService.addUser(newUser);
-    assertEquals(users.size(), userService.getAllUsers().size() - 1);
+    assertEquals(users.size(), userService.getUsers().size() - 1);
     assertEquals(userService.getUserByLogin(USER_LOGIN_TEST).getLogin(), USER_LOGIN_TEST);
   }
 
   @Test(expected = IllegalArgumentException.class)
+  @SqlGroup({
+      @Sql(scripts = "/create-tables-test.sql", config = @SqlConfig(commentPrefix = "`")),
+      @Sql("/data-script.sql")})
+  @Rollback(true)
   public void testAddUserWithSameLogin() throws Exception {
-    List<User> users = userService.getAllUsers();
+    List<User> users = userService.getUsers();
     assertTrue(users.size() > 0);
     User user = users.get(0);
     user.setUserId(null);
     userService.addUser(user);
   }
 
-  @Test
+  //@Test - handle transaction by hands
   public void testAddUserInTransaction() {
-    List<User> users = userService.getAllUsers();
+    List<User> users = userService.getUsers();
     transactionTemplate.execute(new TransactionCallback<Void>() {
       @Override
       public Void doInTransaction(TransactionStatus transactionStatus) {
@@ -113,13 +107,13 @@ public class UserServiceImplTest {
         return null;
       }
     });
-    assertEquals(users.size(), userService.getAllUsers().size() - 1);
+    assertEquals(users.size(), userService.getUsers().size() - 1);
     assertEquals(userService.getUserByLogin(USER_LOGIN_TEST).getLogin(), USER_LOGIN_TEST);
   }
 
-  @Test
+  //@Test - handle transaction by hands
   public void testAddUserTransactionRollback() {
-    List<User> users = userService.getAllUsers();
+    List<User> users = userService.getUsers();
     transactionTemplate.execute(new TransactionCallback<Void>() {
       @Override
       public Void doInTransaction(TransactionStatus transactionStatus) {
@@ -133,7 +127,7 @@ public class UserServiceImplTest {
         return null;
       }
     });
-    assertEquals(users.size(), userService.getAllUsers().size());
+    assertEquals(users.size(), userService.getUsers().size());
     assertNull(userService.getUserByLogin(USER_LOGIN_TEST + 02));
   }
 

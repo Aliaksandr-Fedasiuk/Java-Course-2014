@@ -4,22 +4,22 @@
 
     <artifactId>app-service</artifactId>
     <packaging>jar</packaging>
-    <name>200 Sample User Management Service</name>
+    <name>300 Sample User Management Service</name>
 
     <parent>
-        <groupId>com.epam.brest.courses</groupId>
+        <groupId>com.epam.courses</groupId>
         <artifactId>sampleusermanagement</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>com.epam.brest.courses</groupId>
+            <groupId>com.epam.courses</groupId>
             <artifactId>app-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.epam.brest.courses</groupId>
+            <groupId>com.epam.courses</groupId>
             <artifactId>app-dao</artifactId>
         </dependency>
 
@@ -35,17 +35,26 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
         </dependency>
 
     </dependencies>

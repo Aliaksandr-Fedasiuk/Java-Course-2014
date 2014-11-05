@@ -1,10 +1,6 @@
 package com.epam.courses.dao;
 
 import com.epam.courses.domain.User;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +19,6 @@ public class UserDaoImplTest {
   @Autowired
   private UserDao userDao;
 
-  @BeforeClass
-  public static void setup() throws Exception {
-    BasicConfigurator.configure();
-    Logger.getRootLogger().setLevel(Level.DEBUG);
-  }
-
   @Test
   public void getUsers() throws Exception {
     List<User> users = userDao.getUsers();
@@ -37,10 +27,10 @@ public class UserDaoImplTest {
   }
 
   @Test
-  public void addUser() throws Exception {
+  public void testAddUser() throws Exception {
     List<User> users = userDao.getUsers();
     int sizeBefore = users.size();
-    User user = new User(3L, "userLogin3", "userName3");
+    User user = new User(null, "userLogin3", "userName3");
     userDao.addUser(user);
 
     users = userDao.getUsers();
@@ -49,19 +39,21 @@ public class UserDaoImplTest {
 
   @Test
   public void testGetUserByLogin() throws Exception {
-    User user = new User(4L, "userLogin4", "userName4");
-    userDao.addUser(user);
+    User user = new User(null, "userLogin6", "userName6");
+    Long userId = userDao.addUser(user);
 
-    User newUser = userDao.getUserByLogin("userLogin4");
+    User newUser = userDao.getUserByLogin("userLogin6");
+    user.setUserId(userId);
     assertEquals(user, newUser);
   }
 
   @Test
   public void testGetUserById() throws Exception {
-    User user = new User(5L, "userLogin5", "userName5");
-    userDao.addUser(user);
+    User user = new User(null, "userLogin4", "userName4");
+    Long userId = userDao.addUser(user);
 
-    User newUser = userDao.getUserById(5L);
+    User newUser = userDao.getUserById(userId);
+    user.setUserId(userId);
     assertEquals(user, newUser);
   }
 
